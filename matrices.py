@@ -44,12 +44,10 @@
 ############## Errores.
 
 def error(n):
-    if n==1:
-        return "Fallo de formato, compruebe si es correcta la escritura de la matriz"
-    elif n==2:
-        return "Inserte una matriz cuadrada"
-    elif n==3:
-        return "La matriz no tiene inversa"
+    if n==1: return "Fallo de formato, compruebe si es correcta la escritura de la matriz"
+    elif n==2: return "Inserte una matriz cuadrada"
+    elif n==3: return "La matriz no tiene inversa"
+    elif n==4: return "No se puede aplicar Cramer al sistema"
 
 ############## Información.
 def x(M):
@@ -251,7 +249,7 @@ def mys(l1,l2):
 
 def producto(M1,M2):
     """Producto de dos matrices"""
-    if n(M1) == m(M2):
+    if y(M1) == x(M2):
         A=[[],[x(M1),y(M2)]]
         for f in range(1,x(M1)+1):
             for c in range(1,y(M2)+1):
@@ -278,6 +276,7 @@ def potencia(M,n):
 ############## Determinantes.
 
 def det(M):
+    """Resuelve el determinante de la matriz M"""
     if cuadrada(M):
         if y(M)==1:
             return M[0][0]
@@ -306,6 +305,7 @@ def det(M):
 #print det(Midentidad(10)) # Un poco lenta 
 
 def transpuesta(M):
+    """Devuelve la matriz transpuesta a M"""
     A=[]
     for col in range(1,y(M)+1):
         A+=columna(M,col)
@@ -314,20 +314,8 @@ def transpuesta(M):
 #A=[[1,2,3,4,5,6,],[2,3]]
 #print transpuesta(A)
 
-##************************************************************ En desarrollo:
-def inversa(M):
-    if cuadrada(M):
-        detm=det(M)
-        if detm != 0:
-            Madj=matrizAdjunta(M)
-            return transpuesta(prodnr(Madj,(1/detm)))
-        else:
-            return error(3)
-    else:
-         return error(2),error(3)
-
 def matrizAdjunta(M):
-    "Calcula la matriz adjunta de M"
+    """Calcula la matriz adjunta de M"""
     if not cuadrada(M):
         raise NameError('La matriz no es cuadrada')
     if x(M) == 1:
@@ -343,9 +331,24 @@ def matrizAdjunta(M):
             print det(subM)
             A[0][(i - 1) * y(M) + j - 1] = (-1)**(i + j) * det(subM)
     return A
-    
+
+def inversa(M):
+    """Devuelve la matriz inversa a M"""
+    if cuadrada(M):
+        detm=det(M)
+        if detm != 0:
+            Madj=matrizAdjunta(M)
+            return transpuesta(prodnr(Madj,(1/detm)))
+        else:
+            return error(3)
+    else:
+        return error(2),error(3)
+
+#A=[[1,2,3,4],[2,2]]
+#print inversa(A)
+
 def submatriz(M, f, c):
-    "Elimina la fila f y la columna c de una matriz"
+    """Elimina la fila f y la columna c de una matriz"""
     if x(M) < 2:
         raise NameError("No puedo eliminar la única fila de la matriz")
     if y(M) < 2:
@@ -357,18 +360,48 @@ def submatriz(M, f, c):
     A[1][0] = A[1][0] - 1
     A[1][1] = A[1][1] - 1
     return A
-    
+
+
 def menorescomplementarios():
     pass
 
-def adjuntos():
-    pass
 
 def rango(M): # det =!0 mas grande
     pass # analizar por filas o columnas atendiendo a x o y (el más bajo)
 
 
 ############## Sistemas de ecuaciones lineales.
+def Mmodcramer(A,S,i):
+    csol=columna(S,1)
+    B=[]
+    for n in range(x(A)):
+        fA=fila(A,n+1)
+        #print fA
+        fA[i]=csol[n]
+        B+=fA
+    return [B,[x(A),x(A)]]
+
+def cramer(A,S): # A = matriz 
+    """Resuelve sistemas empleando el metodo de cramer"""
+    da=det(A)
+    if da != 0:
+        sol=[]
+        for i in range(x(A)): #bucle con el numero de incognitas
+            xn=det(Mmodcramer(A,S,i))/da
+            sol.append(xn)
+        return sol # devuelve una lista con las soluciones en orden
+    else:
+        raise NameError(error(4))
+
+#A=[[1,1,0,
+#    0,1,1,
+#    1,0,1],[3,3]]
+
+#S=[[3,
+#    5,
+#    4],[3,1]]
+
+#print cramer(A,S)
 
 def discutir(A,S): # hacer que prescinda de ecuaciones para luego aplicar cramer
     Ampliada=A+S # concatenar filas para obtener la matriz ampliada
@@ -382,13 +415,3 @@ def discutir(A,S): # hacer que prescinda de ecuaciones para luego aplicar cramer
         elif rango(A)< len(fila(A,1)):
             # Sistema compatible indeterminado (infinitas soluciones)
             pass
-
-def cramer(A):
-    #da=det(A)
-    #if da != 0:
-        #sol=[]
-        #for i in range(len(fila(A,1))): #bucle con el numero de incognitas
-            #M=  matriz A con la columna modificada
-            #xn=det(M)/da
-            #sol.append(xn)
-    pass
