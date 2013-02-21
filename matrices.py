@@ -17,7 +17,7 @@
 #  [+] Función transpuestas 
 
 """Las matrices se representan en listas con dos sublistas en la primera va la matriz escrita en orden de filas y en la segunda las dimensiones de esta"""
-as
+
 #ex=[[ 1, 2, 3, 4,
 #      5, 6, 7, 8,
 #      9,10,11,12],[3,4]]
@@ -419,6 +419,7 @@ def discutir(A,S): # hacer que prescinda de ecuaciones para luego aplicar cramer
 def escalonar(M):
     "Escalonar una matriz"
     A = Mlistasfilas(M)
+    print A
     ceros = [] # Localizacion del primer cero de cada fila
     for e in A:
         try:
@@ -426,7 +427,7 @@ def escalonar(M):
         except:
             ceros.append(0)
     if 0 not in ceros:
-        raise NameError "Ninguna fila empieza por un elemento distinto de cero. No se puede escalonar"
+        raise NameError("Ninguna fila empieza por un elemento distinto de cero. No se puede escalonar")
     # Ordenamos las filas según la posición del primer cero
     ceros_en_orden = ceros[:]
     ceros_en_orden.sort()
@@ -448,7 +449,7 @@ def escalonar(M):
             fila2 = [p2 * c for c in A[j]]
             nueva_fila = [fila1[c] - fila2[c] for c in range(0, len(fila1))]
             A[j] = nueva_fila
-    return A
+    return Mlistadoble(A)
     
 def intercambia_filas(M, n, m):
     "Intercambio in situ dos filas de una matriz. Ojo: las espera en el formato Mlistasfilas"
