@@ -327,8 +327,8 @@ def matrizAdjunta(M):
     for i in range(1, x(M) + 1):
         for j in range(1, y(M) + 1):
             subM = submatriz(M, i, j)
-            print subM
-            print det(subM)
+            #print subM
+            #print det(subM)
             A[0][(i - 1) * y(M) + j - 1] = (-1)**(i + j) * det(subM)
     return A
 
@@ -344,9 +344,6 @@ def inversa(M):
     else:
         return error(2),error(3)
 
-#A=[[1,2,3,4],[2,2]]
-#print inversa(A)
-
 def submatriz(M, f, c):
     """Elimina la fila f y la columna c de una matriz"""
     if x(M) < 2:
@@ -361,6 +358,10 @@ def submatriz(M, f, c):
     A[1][1] = A[1][1] - 1
     return A
 
+#A=[[1,1,0,
+#    1,0,1,
+#    0,1,0],[3,3]]
+#print inversa(A)
 
 def menorescomplementarios():
     pass
@@ -372,14 +373,14 @@ def rango(M): # det =!0 mas grande
 
 ############## Sistemas de ecuaciones lineales.
 def Mmodcramer(A,S,i):
+    """Matriz modificada para aplicar cramer"""
     csol=columna(S,1)
     B=[]
     for n in range(x(A)):
         fA=fila(A,n+1)
-        #print fA
         fA[i]=csol[n]
         B+=fA
-    return [B,[x(A),x(A)]]
+    return [B,A[1]]
 
 def cramer(A,S): # A = matriz 
     """Resuelve sistemas empleando el metodo de cramer"""
@@ -393,6 +394,7 @@ def cramer(A,S): # A = matriz
     else:
         raise NameError(error(4))
 
+#Ejemplo de sistema x+y=3; y+z=5; x+z=4
 #A=[[1,1,0,
 #    0,1,1,
 #    1,0,1],[3,3]]
@@ -403,19 +405,24 @@ def cramer(A,S): # A = matriz
 
 #print cramer(A,S)
 
-def discutir(A,S): # hacer que prescinda de ecuaciones para luego aplicar cramer
-    Ampliada=A+S # concatenar filas para obtener la matriz ampliada
-    if rango(A) != rango(Ampliada):
-        # Sistema incompatible (sin solución)
-        pass
-    else:
-        if rango(A) == len(fila(A,1)): # si el rango es igual al numero de incognitas
-            # Sistema compatible determidado (solución unica)
-            pass
-        elif rango(A)< len(fila(A,1)):
-            # Sistema compatible indeterminado (infinitas soluciones)
-            pass
+def Ampliada(A,S):
+    M=[]
+    for f in range(1,x(A)+1):
+        M+=(fila(A,f)+fila(S,f))
+    return [M,[x(A),(y(A)+y(S))]]
 
+#imprime(Ampliada(A,S))
+
+def discutir(A,S): 
+    rgA=rango(A)
+    if rgA != rango(Ampliada(A,S)):
+        print "Sistema incompatible (sin solución)"
+    else: # falta hacer que prescinda de ecuaciones para luego aplicar cramer 
+        if rgA == len(fila(A,1)): # si el rango es igual al numero de incognitas
+            print "Sistema compatible determidado (solución unica)"
+        elif rgA < len(fila(A,1)): 
+            print "Sistema compatible indeterminado (infinitas soluciones)"
+            
 def escalonar(M):
     "Escalonar una matriz"
     A = Mlistasfilas(M)
@@ -457,3 +464,4 @@ def intercambia_filas(M, n, m):
     g = M[m - 1]
     M[n - 1] = g
     M[m - 1] = f
+ 
