@@ -17,7 +17,7 @@
 #  [+] Función transpuestas 
 
 """Las matrices se representan en listas con dos sublistas en la primera va la matriz escrita en orden de filas y en la segunda las dimensiones de esta"""
-
+as
 #ex=[[ 1, 2, 3, 4,
 #      5, 6, 7, 8,
 #      9,10,11,12],[3,4]]
@@ -415,3 +415,44 @@ def discutir(A,S): # hacer que prescinda de ecuaciones para luego aplicar cramer
         elif rango(A)< len(fila(A,1)):
             # Sistema compatible indeterminado (infinitas soluciones)
             pass
+
+def escalonar(M):
+    "Escalonar una matriz"
+    A = Mlistasfilas(M)
+    ceros = [] # Localizacion del primer cero de cada fila
+    for e in A:
+        try:
+            ceros.append(e.index(0) + 1)
+        except:
+            ceros.append(0)
+    if 0 not in ceros:
+        raise NameError "Ninguna fila empieza por un elemento distinto de cero. No se puede escalonar"
+    # Ordenamos las filas según la posición del primer cero
+    ceros_en_orden = ceros[:]
+    ceros_en_orden.sort()
+    for i,e in enumerate(ceros):
+        if ceros[i] != ceros_en_orden[i]:
+            for j in range(i, len(ceros)):
+                if ceros[j] == ceros_en_orden[i]:
+                    intercambia_filas(A, i, j)
+                    ceros[i] = ceros_en_orden[i]
+                    ceros[j] = ceros_en_orden[j]
+                    break
+    # Escalonamiento en sí
+    for i in range(0, len(A)):
+        for j in range(i + 1, len(A)):
+            mcm = A[i][i] * A[j][i]
+            p1 = mcm / A[i][i]
+            p2 = mcm / A[j][i]
+            fila1 = [p1 * c for c in A[i]]
+            fila2 = [p2 * c for c in A[j]]
+            nueva_fila = [fila1[c] - fila2[c] for c in range(0, len(fila1))]
+            A[j] = nueva_fila
+    return A
+    
+def intercambia_filas(M, n, m):
+    "Intercambio in situ dos filas de una matriz. Ojo: las espera en el formato Mlistasfilas"
+    f = M[n - 1]
+    g = M[m - 1]
+    M[n - 1] = g
+    M[m - 1] = f
