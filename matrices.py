@@ -424,64 +424,46 @@ def discutir(A,S):
             print "Sistema compatible indeterminado (infinitas soluciones)"
             
 def escalonar(M):
-    "Escalonar una matriz"
-    def intercambia_filas(M, n, m):
-        "Intercambio in situ dos filas de una matriz. Ojo: las espera en el formato Mlistasfilas"
-        f = M[n - 1]
-        g = M[m - 1]
-        M[n - 1] = g
-        M[m - 1] = f
-        
-    def simplifica_filas(M):
-        "Simplifica las filas de una matriz. Ojo: las espera en el formato Mlistasfilas"
-        for i in M:
+    "Devuelve la matriz escalonada"
+    def simplifica(M):
+        for fila in M:
             mcd = 1
-            for prueba in range(1, min(i)):
-                ok = True
-                for j in i:
-                    if j % mcd != 0:
-                        ok = False
-                        break
-                if ok:
-                    mcd = prueba
-            for a,b in enumerate(i):
-                i[a] = b / mcd
-    
+            for i in range(2, min([abs(e) for e in fila]) + 1):
+                divisor = True
+                for e in fila:
+                    if e % i != 0:
+                        divisor = False
+                if divisor:
+                    mcd = i
+            for i in range(0, len(fila)):
+                fila[i] = fila[i] / mcd
+                
+    def reorganiza_pivote(M, f, c):
+        for i in range(f + 1, len(M)):
+            if M[i][c] != 0:
+                M[f], M[i] = M[i], M[f]
+                break
+                
     A = Mlistasfilas(M)
-    ceros = [] # Localizacion del primer cero de cada fila
-    for e in A:
-        try:
-            ceros.append(e.index(0) + 1)
-        except:
-            ceros.append(0)
-    if 0 not in ceros:
-        raise NameError("Ninguna fila empieza por un elemento distinto de cero. No se puede escalonar")
-    # Ordenamos las filas según la posición del primer cero
-    ceros_en_orden = ceros[:]
-    ceros_en_orden.sort()
-    print ceros, ceros_en_orden
-    for i,e in enumerate(ceros):
-        if ceros[i] != ceros_en_orden[i]:
-            for j in range(i, len(ceros)):
-                if ceros[j] == ceros_en_orden[i]:
-                    intercambia_filas(A, i + 1, j + 1)
-                    ceros[i] = ceros_en_orden[i]
-                    ceros[j] = ceros_en_orden[j]
+    escalon = -1
+    for fila in range(0, len(A)):
+        simplifica(A)
+        escalon = escalon + 1
+        if escalon >= len(A[0]): # Se nos agotan las columnas
+            break
+        while A[fila][escalon] == 0: # Tenemos un cero de pivote. Hay que intercambiar filas
+            reorganiza_pivote(A, fila, escalon)
+            if A[fila][escalon] == 0: # Si no hay manera, corremos el escalon
+                escalon = escalon + 1
+                if escalon >= len(A[0]):
                     break
-    # Escalonamiento en sí
-    imprime(Mlistadoble(A))
-    for i in range(0, len(A)):
-        for j in range(i + 1, len(A)):
-            mcm = A[i][i] * A[j][i]
-            if mcm != 0:
-                p1 = mcm / A[i][i]
-                p2 = mcm / A[j][i]
-                fila1 = [p1 * c for c in A[i]]
-                fila2 = [p2 * c for c in A[j]]
-                nueva_fila = [fila1[c] - fila2[c] for c in range(0, len(fila1))]
-                A[j] = nueva_fila
-                imprime(Mlistadoble(A))
-        simplifica_filas(A)
+        if escalon >= len(A[0]):
+            break
+        for fila2 in range(fila + 1, len(A)):
+            p1, p2 = A[fila2][escalon], A[fila][escalon]
+            for c in range(escalon, len(A[0])):
+                A[fila2][c] = A[fila][c] * p1 - A[fila2][c] * p2
     return Mlistadoble(A)
+                
     
- 
+            
