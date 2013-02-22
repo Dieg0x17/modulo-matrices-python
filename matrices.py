@@ -425,8 +425,29 @@ def discutir(A,S):
             
 def escalonar(M):
     "Escalonar una matriz"
+    def intercambia_filas(M, n, m):
+        "Intercambio in situ dos filas de una matriz. Ojo: las espera en el formato Mlistasfilas"
+        f = M[n - 1]
+        g = M[m - 1]
+        M[n - 1] = g
+        M[m - 1] = f
+        
+    def simplifica_filas(M):
+        "Simplifica las filas de una matriz. Ojo: las espera en el formato Mlistasfilas"
+        for i in M:
+            mcd = 1
+            for prueba in range(1, min(i)):
+                ok = True
+                for j in i:
+                    if j % mcd != 0:
+                        ok = False
+                        break
+                if ok:
+                    mcd = prueba
+            for a,b in enumerate(i):
+                i[a] = b / mcd
+    
     A = Mlistasfilas(M)
-    print A
     ceros = [] # Localizacion del primer cero de cada fila
     for e in A:
         try:
@@ -438,30 +459,29 @@ def escalonar(M):
     # Ordenamos las filas según la posición del primer cero
     ceros_en_orden = ceros[:]
     ceros_en_orden.sort()
+    print ceros, ceros_en_orden
     for i,e in enumerate(ceros):
         if ceros[i] != ceros_en_orden[i]:
             for j in range(i, len(ceros)):
                 if ceros[j] == ceros_en_orden[i]:
-                    intercambia_filas(A, i, j)
+                    intercambia_filas(A, i + 1, j + 1)
                     ceros[i] = ceros_en_orden[i]
                     ceros[j] = ceros_en_orden[j]
                     break
     # Escalonamiento en sí
+    imprime(Mlistadoble(A))
     for i in range(0, len(A)):
         for j in range(i + 1, len(A)):
             mcm = A[i][i] * A[j][i]
-            p1 = mcm / A[i][i]
-            p2 = mcm / A[j][i]
-            fila1 = [p1 * c for c in A[i]]
-            fila2 = [p2 * c for c in A[j]]
-            nueva_fila = [fila1[c] - fila2[c] for c in range(0, len(fila1))]
-            A[j] = nueva_fila
+            if mcm != 0:
+                p1 = mcm / A[i][i]
+                p2 = mcm / A[j][i]
+                fila1 = [p1 * c for c in A[i]]
+                fila2 = [p2 * c for c in A[j]]
+                nueva_fila = [fila1[c] - fila2[c] for c in range(0, len(fila1))]
+                A[j] = nueva_fila
+                imprime(Mlistadoble(A))
+        simplifica_filas(A)
     return Mlistadoble(A)
     
-def intercambia_filas(M, n, m):
-    "Intercambio in situ dos filas de una matriz. Ojo: las espera en el formato Mlistasfilas"
-    f = M[n - 1]
-    g = M[m - 1]
-    M[n - 1] = g
-    M[m - 1] = f
  
