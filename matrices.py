@@ -403,19 +403,6 @@ def cramer(A,S): # A = matriz
 
 #print cramer(A,S)
 
-def discutir(A,S): # hacer que prescinda de ecuaciones para luego aplicar cramer
-    Ampliada=A+S # concatenar filas para obtener la matriz ampliada
-    if rango(A) != rango(Ampliada):
-        # Sistema incompatible (sin solución)
-        pass
-    else:
-        if rango(A) == len(fila(A,1)): # si el rango es igual al numero de incognitas
-            # Sistema compatible determidado (solución unica)
-            pass
-        elif rango(A)< len(fila(A,1)):
-            # Sistema compatible indeterminado (infinitas soluciones)
-            pass
-
 def escalonar(M):
     "Escalonar una matriz"
     A = Mlistasfilas(M)
@@ -457,3 +444,37 @@ def intercambia_filas(M, n, m):
     g = M[m - 1]
     M[n - 1] = g
     M[m - 1] = f
+    
+Mex=[[2, 2, 4,-8,
+    1,-3,-4, 5,
+    2,-1,-1, 0, 
+    0,-2,-2, 1],[4,4]]
+
+imprime(escalonar(Mex))
+
+# Solución
+#    ┌                 ┐
+#    │ -1  -3  -4    5 │
+#    │  0  -2  -2    1 │
+#A = │  0   0   4  -13 │
+#    │  0   0   0    0 │
+#    └                 ┘
+
+def Ampliada(A,S):
+    """Crea una matriz amploada a partir de dos matrices con el mismo número de filas"""
+    M=[]
+    for f in range(1,x(A)+1):
+        M+=(fila(A,f)+fila(S,f))
+    return [M,[x(A),(y(A)+y(S))]]
+
+#imprime(Ampliada(A,S))
+
+def discutir(A,S): 
+    rgA=rango(A)
+    if rgA != rango(Ampliada(A,S)):
+        print "Sistema incompatible (sin solución)"
+    else: # falta hacer que prescinda de ecuaciones para luego aplicar cramer 
+        if rgA == len(fila(A,1)): # si el rango es igual al numero de incognitas
+            print "Sistema compatible determidado (solución unica)"
+        elif rgA < len(fila(A,1)): 
+            print "Sistema compatible indeterminado (infinitas soluciones)"
