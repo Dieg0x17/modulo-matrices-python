@@ -336,7 +336,7 @@ def inversa(M):
         detm=det(M)
         if detm != 0:
             Madj=matrizAdjunta(M)
-            return traspuesta(prodnr(Madj,(1/detm)))
+            return traspuesta(prodnr(Madj,(1.0 / detm)))
         else:
             return error(3)
     else:
