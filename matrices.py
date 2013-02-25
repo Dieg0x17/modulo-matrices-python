@@ -14,7 +14,7 @@
 #  [+] Funciones para cambios de formato
 #  [+] Función de errores 
 #  [+] Función determinantes 
-#  [+] Función transpuestas 
+#  [+] Función traspuestas 
 
 """Las matrices se representan en listas con dos sublistas en la primera va la matriz escrita en orden de filas y en la segunda las dimensiones de esta"""
 
@@ -304,15 +304,15 @@ def det(M):
 #print det(A)
 #print det(Midentidad(10)) # Un poco lenta 
 
-def transpuesta(M):
-    """Devuelve la matriz transpuesta a M"""
+def traspuesta(M):
+    """Devuelve la matriz traspuesta a M"""
     A=[]
     for col in range(1,y(M)+1):
         A+=columna(M,col)
     return [A,[y(M),x(M)]]
 
 #A=[[1,2,3,4,5,6,],[2,3]]
-#print transpuesta(A)
+#print traspuesta(A)
 
 def matrizAdjunta(M):
     """Calcula la matriz adjunta de M"""
@@ -338,7 +338,7 @@ def inversa(M):
         detm=det(M)
         if detm != 0:
             Madj=matrizAdjunta(M)
-            return transpuesta(prodnr(Madj,(1/detm)))
+            return traspuesta(prodnr(Madj,(1/detm)))
         else:
             return error(3)
     else:
