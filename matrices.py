@@ -327,8 +327,6 @@ def matrizAdjunta(M):
     for i in range(1, x(M) + 1):
         for j in range(1, y(M) + 1):
             subM = submatriz(M, i, j)
-            print subM
-            print det(subM)
             A[0][(i - 1) * y(M) + j - 1] = (-1)**(i + j) * det(subM)
     return A
 
