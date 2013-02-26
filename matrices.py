@@ -43,6 +43,8 @@
 
 ############## Errores.
 
+import fractions
+
 def error(n):
     if n==1: return "Fallo de formato, compruebe si es correcta la escritura de la matriz"
     elif n==2: return "Inserte una matriz cuadrada"
@@ -336,7 +338,7 @@ def inversa(M):
         detm=det(M)
         if detm != 0:
             Madj=matrizAdjunta(M)
-            return traspuesta(prodnr(Madj,(1.0 / detm)))
+            return traspuesta(prodnr(Madj,(fractions.Fraction(1 , detm))))
         else:
             return error(3)
     else:
