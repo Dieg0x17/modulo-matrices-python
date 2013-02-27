@@ -1,47 +1,11 @@
 #!/usr/bin/env python
 ## coding: utf-8
 # Modulo para operar con matrices (http://code.google.com/p/modulo-matrices-python/)
-#
+# Información sobre el uso de las funciones con ejemplos detallados (http://code.google.com/p/modulo-matrices-python/wiki/Funciones)
 # Authors:
 #    Diego Rasero
 #    Felipe Hommen
-# 
 # This python module is distributed under the terms of GPLv3 license
-#
-# ChangeLog 0.02332-1:
-#  [+] Operaciones basicas
-#  [+] Obtención de información (diagonales, filas, columnas...)
-#  [+] Funciones para cambios de formato
-#  [+] Función de errores 
-#  [+] Función determinantes 
-#  [+] Función traspuestas 
-
-"""Las matrices se representan en listas con dos sublistas en la primera va la matriz escrita en orden de filas y en la segunda las dimensiones de esta"""
-
-#ex=[[ 1, 2, 3, 4,
-#      5, 6, 7, 8,
-#      9,10,11,12],[3,4]]
-
-#ex2=[[0, 1, 2,
-#      3, 4, 5,
-#      6, 7, 8],[3,3]]
-
-#ex3=[[ 0, 1, 2, 3, 4, 5, 
-#       6, 7, 8, 9,10,11,
-#      12,13,14,15,16,17,
-#      18,19,20,21,22,23,
-#      24,25,26,27,28,29,
-#      30,31,32,33,34,35],[6,6]]
-
-#ex4=[[1],[1,1]]
-
-#ex5=[[ 1, 2, 3, 4, 5,
-#       6, 7, 8, 9,10,
-#      11,12,13,14,15,
-#      16,17,18,19,20,
-#      21,22,23,24,25],[5,5]]
-
-############## Errores.
 
 import fractions
 
@@ -51,25 +15,18 @@ def error(n):
     elif n==3: return "La matriz no tiene inversa"
     elif n==4: return "No se puede aplicar Cramer al sistema"
 
-############## Información.
 def x(M):
     """Devuelve el número de filas"""
     return M[1][0] # devuelve m
-
-#print x(ex)
 
 def y(M):
     """Devuelve el número de columnas"""
     return M[1][1] # devuelve n
 
-#print y(ex)
-
 def fila(M,f):
     """Devuelve la fila f de la matriz M"""
     if f <= x(M) and f >= 1:
         return M[0][(f-1)*y(M):((f-1)*y(M))+y(M)]
-
-#print fila(ex5,3)
 
 def columna(M,c):
     """Devuelve la columna c de la matriz M"""
@@ -79,10 +36,6 @@ def columna(M,c):
             l=fila(M,i)
             A=A+[l[c-1]]
         return A
-
-#print columna(ex5,3)
-
-############## Comprobaciones.
 
 def comprueba(M):
     """comprueba la validez de una matriz"""
@@ -94,19 +47,12 @@ def comprueba(M):
     except:
         error(1)
 
-#N=23
-#print comprueba(N)
-#print comprueba(ex)
-
 def cuadrada(M):
     """Verifica que se trata de una matriz cuadrada"""
     if x(M) == y(M):
         return True
     else:
         return False
-
-#print cuadrada(ex)
-#print cuadrada(ex3)
 
 def diagonalprincipal(M):
     """ Devuelve la diagonal principal de una matriz"""
@@ -115,8 +61,6 @@ def diagonalprincipal(M):
         for i in range(0,(x(M)*y(M)),(x(M)+1)):
             D.append(M[0][i])
         return D
-
-#print diagonalprincipal(ex3) 
 
 def diagonalsecundaria(M):
     """ Devuelve la diagonal secundaria de una matriz"""
@@ -128,8 +72,6 @@ def diagonalsecundaria(M):
             for i in range((y(M)-1),(y(M)*(y(M)-1))+1,(y(M)-1)):
                 D.append(M[0][i])
         return D
-
-#print diagonalsecundaria(ex3)
 
 def simetrica(M):
     """comprueba la simetria de una matriz"""
@@ -145,11 +87,6 @@ def simetrica(M):
     else:
         return False
 
-#print simetrica(Midentidad(3))
-#print simetrica(ex5)
-
-############## Formato de las matrices.
-
 def Mlistasfilas(M):
     """Cambia el formato de las matrices a una lista con sublistas del tamaño de las columnas"""
     A=[]
@@ -157,17 +94,12 @@ def Mlistasfilas(M):
         A.append(fila(M,f))
     return A
 
-#print Mlistasfilas(ex)
-
 def Mlistadoble(M):
     """Cambia el formato de las matrices a una lista con dos sublistas una con todos los elementos y otra con las dimensiones"""
     A=[]
     for i in range(len(M)):
         A+=M[i]
     return [A,[len(M),len(M[0])]]
-
-#ej=[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
-#print Mlistadoble(ej)
 
 def imprime(M):
     """Imprime la matriz de forma ordenada"""
@@ -185,17 +117,10 @@ def imprime(M):
         string =""
     print("")
 
-#imprime(ex)
-
-############## Creación de matrices.
-
 def Mnula(x, y):
     """ Crea una matriz nula"""
     A = [0]*x*y
     return [A,[x,y]]
-
-#print Mnula(3,6)
-#print Mnula(2,2)
 
 def Midentidad(x):
     """ Crea una matriz identidad"""
@@ -204,13 +129,9 @@ def Midentidad(x):
         A[0][i]=1
     return A
 
-#mi=Midentidad(7)
-
 def Maleatoria():
     """Crea una matriz de dimensiones aleatorias con un numeros aleatorios"""
     pass
-
-############## Operaciones con matrices.
 
 def suma(M1,M2):
     """Suma de dos matrices de las mismas dimensiones"""
@@ -220,8 +141,6 @@ def suma(M1,M2):
             A=A+[M1[0][i]+M2[0][i]]
         return [A,[y(M1),x(M1)]]
 
-#Sol=suma(ex2,Midentidad(3))
-
 def resta(M1,M2):
     """Resta de dos matrices de las mismas dimensiones"""
     if y(M1)==y(M2) and x(M1)==x(M2):
@@ -230,16 +149,12 @@ def resta(M1,M2):
             A=A+[M1[0][i]-M2[0][i]]
         return [A,[y(M1),x(M1)]]
 
-#Sol=resta(ex2,Midentidad(3))
-
 def prodnr(M,k):
     """Producto de un número real por una matriz"""
     A=[]
     for i in range(y(M)*x(M)):
         A=A+[M[0][i]*k]
     return [A,[y(M),x(M)]]
-
-#Sol=prodnr(ex,23)
 
 def mys(l1,l2):
     """Multiplica dos listas iguales y suma el resultado"""
@@ -260,8 +175,6 @@ def producto(M1,M2):
     else:
         return "Error de formato"
 
-#Sol=producto(ex2,ex)
-
 def potencia(M,n):
     """Potencia de una matriz"""
     if n==1:
@@ -271,11 +184,6 @@ def potencia(M,n):
         for i in range(2,n+1):
             A=producto(M,A)
         return A
-
-#Sol=potencia(ex3,7)
-
-
-############## Determinantes.
 
 def det(M):
     """Resuelve el determinante de la matriz M"""
@@ -298,23 +206,12 @@ def det(M):
                 deter+= f1[n] * ((-1)**n) * det([subM,[y(M)-1,y(M)-1]])
             return deter
 
-#A=[[0,1,2,3,
-#    4,5,6,7,
-#    8,9,10,11,
-#    12,13,14,15],[4,4]]
-
-#print det(A)
-#print det(Midentidad(10)) # Un poco lenta 
-
 def traspuesta(M):
     """Devuelve la matriz traspuesta a M"""
     A=[]
     for col in range(1,y(M)+1):
         A+=columna(M,col)
     return [A,[y(M),x(M)]]
-
-#A=[[1,2,3,4,5,6,],[2,3]]
-#print traspuesta(A)
 
 def matrizAdjunta(M):
     """Calcula la matriz adjunta de M"""
@@ -344,9 +241,6 @@ def inversa(M):
     else:
         return error(2),error(3)
 
-#A=[[1,2,3,4],[2,2]]
-#print inversa(A)
-
 def submatriz(M, f, c):
     """Elimina la fila f y la columna c de una matriz"""
     if x(M) < 2:
@@ -361,18 +255,14 @@ def submatriz(M, f, c):
     A[1][1] = A[1][1] - 1
     return A
 
-
 def menorescomplementarios():
     pass
-
 
 def rango(M):
     A = Mlistasfilas(escalonar(M))
     ceros = [0] * len(A[0])
     return len(A) - A.count(ceros)
 
-
-############## Sistemas de ecuaciones lineales.
 def Mmodcramer(A,S,i):
     csol=columna(S,1)
     B=[]
@@ -394,16 +284,6 @@ def cramer(A,S): # A = matriz
         return sol # devuelve una lista con las soluciones en orden
     else:
         raise NameError(error(4))
-
-#A=[[1,1,0,
-#    0,1,1,
-#    1,0,1],[3,3]]
-
-#S=[[3,
-#    5,
-#    4],[3,1]]
-
-#print cramer(A,S)
 
 def escalonar(M):
     "Devuelve la matriz escalonada"
@@ -448,30 +328,12 @@ def escalonar(M):
                 A[fila2][c] = A[fila][c] * p1 - A[fila2][c] * p2
     return Mlistadoble(A) 
 
-    
-#Mex=[[2, 2, 4,-8,
-#    1,-3,-4, 5,
-#    2,-1,-1, 0, 
-#    0,-2,-2, 1],[4,4]]
-
-#imprime(escalonar(Mex))
-
-# Solución
-#    ┌                 ┐
-#    │ -1  -3  -4    5 │
-#    │  0  -2  -2    1 │
-#A = │  0   0   4  -13 │
-#    │  0   0   0    0 │
-#    └                 ┘
-
 def Ampliada(A,S):
     """Crea una matriz ampliada a partir de dos matrices con el mismo número de filas"""
     M=[]
     for f in range(1,x(A)+1):
         M+=(fila(A,f)+fila(S,f))
     return [M,[x(A),(y(A)+y(S))]]
-
-#imprime(Ampliada(A,S))
 
 def discutir(A,S): 
     rgA=rango(A)
