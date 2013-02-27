@@ -366,8 +366,10 @@ def menorescomplementarios():
     pass
 
 
-def rango(M): # det =!0 mas grande
-    pass # analizar por filas o columnas atendiendo a x o y (el más bajo)
+def rango(M):
+    A = Mlistasfilas(escalonar(M))
+    ceros = [0] * len(A[0])
+    return len(A) - A.count(ceros)
 
 
 ############## Sistemas de ecuaciones lineales.
@@ -447,12 +449,12 @@ def escalonar(M):
     return Mlistadoble(A) 
 
     
-Mex=[[2, 2, 4,-8,
-    1,-3,-4, 5,
-    2,-1,-1, 0, 
-    0,-2,-2, 1],[4,4]]
+#Mex=[[2, 2, 4,-8,
+#    1,-3,-4, 5,
+#    2,-1,-1, 0, 
+#    0,-2,-2, 1],[4,4]]
 
-imprime(escalonar(Mex))
+#imprime(escalonar(Mex))
 
 # Solución
 #    ┌                 ┐
