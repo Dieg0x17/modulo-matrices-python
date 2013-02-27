@@ -463,7 +463,7 @@ imprime(escalonar(Mex))
 #    └                 ┘
 
 def Ampliada(A,S):
-    """Crea una matriz amploada a partir de dos matrices con el mismo número de filas"""
+    """Crea una matriz ampliada a partir de dos matrices con el mismo número de filas"""
     M=[]
     for f in range(1,x(A)+1):
         M+=(fila(A,f)+fila(S,f))
