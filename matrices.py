@@ -172,7 +172,7 @@ def Mlistadoble(M):
 def imprime(M):
     """Imprime la matriz de forma ordenada"""
     string=""
-    print ""
+    print("")
     for f in range(1,x(M)+1): # rango numero de filas
         for n in fila(M,f):
             if n < 10:
@@ -181,9 +181,9 @@ def imprime(M):
                 string=string+"  "+str(n)
             else:
                 string=string+" "+str(n)
-        print string
+        print(string)
         string =""
-    print ""
+    print("")
 
 #imprime(ex)
 
@@ -476,9 +476,9 @@ def Ampliada(A,S):
 def discutir(A,S): 
     rgA=rango(A)
     if rgA != rango(Ampliada(A,S)):
-        print "Sistema incompatible (sin solución)"
+        print("Sistema incompatible (sin solución)")
     else: # falta hacer que prescinda de ecuaciones para luego aplicar cramer 
         if rgA == len(fila(A,1)): # si el rango es igual al numero de incognitas
-            print "Sistema compatible determidado (solución unica)"
+            print("Sistema compatible determidado (solución unica)")
         elif rgA < len(fila(A,1)): 
-            print "Sistema compatible indeterminado (infinitas soluciones)"
+            print("Sistema compatible indeterminado (infinitas soluciones)")
