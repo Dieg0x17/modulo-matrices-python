@@ -156,16 +156,16 @@ def prodnr(M,k):
         A=A+[M[0][i]*k]
     return [A,[y(M),x(M)]]
 
-def mys(l1,l2):
-    """Multiplica dos listas iguales y suma el resultado"""
-    if len(l1)==len(l2):
-        n=0
-        for i in range(len(l1)):
-            n+=l1[i]*l2[i]
-        return n
-
 def producto(M1,M2):
     """Producto de dos matrices"""
+    def mys(l1,l2):
+        """Multiplica dos listas iguales y suma el resultado"""
+        if len(l1)==len(l2):
+            n=0
+            for i in range(len(l1)):
+                n+=l1[i]*l2[i]
+            return n
+    
     if y(M1) == x(M2):
         A=[[],[x(M1),y(M2)]]
         for f in range(1,x(M1)+1):
@@ -173,7 +173,7 @@ def producto(M1,M2):
                 A[0].append(mys(fila(M1,f),columna(M2,c)))
         return A
     else:
-        return "Error de formato"
+        return error(1)
 
 def potencia(M,n):
     """Potencia de una matriz"""
