@@ -263,18 +263,16 @@ def rango(M):
     ceros = [0] * len(A[0])
     return len(A) - A.count(ceros)
 
-def Mmodcramer(A,S,i):
-    csol=columna(S,1)
-    B=[]
-    for n in range(x(A)):
-        fA=fila(A,n+1)
-        #print fA
-        fA[i]=csol[n]
-        B+=fA
-    return [B,[x(A),x(A)]]
-
 def cramer(A,S): # A = matriz 
     """Resuelve sistemas empleando el metodo de cramer"""
+    def Mmodcramer(A,S,i):
+        csol=columna(S,1)
+        B=[]
+        for n in range(x(A)):
+            fA=fila(A,n+1)
+            fA[i]=csol[n]
+            B+=fA
+        return [B,[x(A),x(A)]]
     da=det(A)
     if da != 0:
         sol=[]
