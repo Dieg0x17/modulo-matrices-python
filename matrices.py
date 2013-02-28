@@ -242,7 +242,7 @@ def inversa(M):
         return error(2),error(3)
 
 def submatriz(M, f, c):
-    """Elimina la fila f y la columna c de una matriz"""
+    """Elimina la fila f y la columna c de una matriz (menor complementario)"""
     if x(M) < 2:
         raise NameError("No puedo eliminar la única fila de la matriz")
     if y(M) < 2:
@@ -254,9 +254,6 @@ def submatriz(M, f, c):
     A[1][0] = A[1][0] - 1
     A[1][1] = A[1][1] - 1
     return A
-
-def menorescomplementarios():
-    pass
 
 def rango(M):
     A = Mlistasfilas(escalonar(M))
