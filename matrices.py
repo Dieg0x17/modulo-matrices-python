@@ -282,19 +282,7 @@ def cramer(A, S):
 
 def escalonar(M):
     "Devuelve la matriz escalonada"
-    #Primero un par de funciones auxiliares
-    def simplifica(M):
-        for fila in M:
-            mcd=1
-            for i in range(2, min([abs(e) for e in fila])+1):
-                divisor=True
-                for e in fila:
-                    if e%i!=0:
-                        divisor=False
-                if divisor:
-                    mcd=i
-            for i in range(0, len(fila)):
-                fila[i]=fila[i]/mcd
+    #Primero una funcion auxiliar
 
     def reorganiza_pivote(M, f, c):
         for i in range(f+1, len(M)):
@@ -305,7 +293,6 @@ def escalonar(M):
     A=Mlistasfilas(M)
     escalon=-1
     for fila in range(0, len(A)):
-        simplifica(A)
         escalon=escalon+1
         if escalon>=len(A[0]): # Se nos agotan las columnas
             break
@@ -318,9 +305,9 @@ def escalonar(M):
         if escalon>=len(A[0]):
             break
         for fila2 in range(fila+1, len(A)):
-            p1, p2=A[fila2][escalon], A[fila][escalon]
+            p1, p2 = A[fila2][escalon], A[fila][escalon]
             for c in range(escalon, len(A[0])):
-                A[fila2][c]=A[fila][c]*p1-A[fila2][c]*p2
+                A[fila2][c] = A[fila][c]*p1 - A[fila2][c]*p2
     return Mlistadoble(A)
 
 def ampliada(A, S):
