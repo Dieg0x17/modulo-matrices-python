@@ -41,11 +41,11 @@ def comprueba(M):
     """comprueba la validez de una matriz"""
     try:
         if len(M[0])==x(M)*y(M) and len(M[1])==2:
-            return M
+            return True #M
         else:
-            error(1)
+            return False #error(1)
     except:
-        error(1)
+        return False #error(1)
 
 def cuadrada(M):
     """Verifica que se trata de una matriz cuadrada"""
@@ -323,7 +323,7 @@ def escalonar(M):
                 A[fila2][c]=A[fila][c]*p1-A[fila2][c]*p2
     return Mlistadoble(A)
 
-def Ampliada(A, S):
+def ampliada(A, S):
     """Crea una matriz ampliada a partir de dos matrices con el mismo número de filas"""
     M=[]
     for f in range(1, x(A)+1):
