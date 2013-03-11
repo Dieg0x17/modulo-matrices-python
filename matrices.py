@@ -58,8 +58,11 @@ def diagonalprincipal(M):
     """ Devuelve la diagonal principal de una matriz"""
     if cuadrada(M):
         D=[]
-        for i in range(0, (x(M)*y(M)), (x(M)+1)):
-            D.append(M[0][i])
+        if x(M)==1:
+            D=[[M[0][0]]]
+        else:
+            for i in range(0, (x(M)*y(M)), (x(M)+1)):
+                D.append(M[0][i])
         return D
 
 def diagonalsecundaria(M):
@@ -322,7 +325,7 @@ def discutir(A, S):
     if rgA!=rango(Ampliada(A, S)):
         print("Sistema incompatible (sin solución)")
         return 0
-    else: # falta hacer que prescinda de ecuaciones para luego aplicar cramer 
+    else: 
         if rgA==len(fila(A, 1)):
             print("Sistema compatible determidado (solución unica)")
             return 1
