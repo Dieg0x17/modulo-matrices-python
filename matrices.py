@@ -332,3 +332,128 @@ def discutir(A, S):
         elif rgA<len(fila(A, 1)):
             print("Sistema compatible indeterminado (infinitas soluciones)")
             return 2
+
+def evalua(expresion, matrices):
+	"""Evalua una expresion matricial. Por ahora acepta sumas ,restas y productos"""
+	def formatea(expresion):
+		if expresion.count('(') != expresion.count(')'):
+			return None # Error: los parentesis no estan emparejados.
+		expresion = expresion.strip()
+		expresion = expresion.replace(')(', ').(')
+		for i in range(0, len(expresion) - 1):
+			if expresion[i].isupper() and expresion[i + 1].isupper():
+				expresion = expresion[:i + 1] + '.' + expresion[i + 1:] # introduce punto entre dos mayusculas seguidas
+		if expresion[-1:] in ['+', '-', '.']:
+			expresion = expresion[:-1]
+		return expresion
+        
+    
+	def calcula(expresion, matrices):
+		while expresion[0] == '(' and expresion[-1:] == ')':
+			expresion = expresion[1:-1] # Quitamos parentesis globales si los hay
+		if expresion in list(matrices.keys()): # Es directamente una matriz
+			return matrices[expresion]
+		s = hazsumas(expresion, matrices)
+		if s != None :
+			return s
+		s = hazrestas(expresion, matrices)
+		if s != None:
+			return s
+		s = hazproductos(expresion,matrices)
+		if s != None:
+			return s
+	
+	def hazsumas(expresion, matrices):
+		i=0
+		p = 0 # nivel de parentesis
+		marca = 0
+		operandos = []
+		while i < len(expresion):	# Buscamos sumas globales
+			if expresion[i] == '(':
+				p = p + 1
+			elif expresion[i] == ')':
+				p = p - 1
+			elif expresion[i] == '+' and p == 0:
+				operandos.append(expresion[marca:i])
+				marca = i + 1
+			i = i + 1
+		operandos.append(expresion[marca:])
+		if marca != 0: # Hemos encontrado una suma primaria
+			if len(operandos) == 1: # Una suma de una sola matriz. Podria ser
+				return calcula(operandos[0], matrices)
+			else: #Suma esperada de varias matrices
+				acumulado = calcula(operandos[0], matrices)
+				for i in operandos[1:]:
+					acumulado = suma(acumulado, calcula(i, matrices))
+				return acumulado
+		else:
+			return None
+			
+	def hazrestas(expresion, matrices):
+		i=0
+		p = 0
+		marca = 0
+		operandos = []
+		while i < len(expresion):	# Buscamos restas globales
+			if expresion[i] == '(':
+				p = p + 1
+			elif expresion[i] == ')':
+				p = p - 1
+			elif expresion[i] == '-' and p == 0:
+				operandos.append(expresion[marca:i])
+				marca = i + 1
+			i = i + 1
+		operandos.append(expresion[marca:])
+		if marca != 0: # Hemos encontrado restas primarias
+			if len(operandos) == 1: # Una resta de una sola matriz. Podria ser
+				M = calcula(operandos[0], matrices)
+				nula = Mnula(M.x, M.y)
+				return resta(nula, M)
+			else: # Resta esperada de varias matrices
+				if expresion[0] != '-': #La primera no es negativa
+					acumulado = calcula(operandos[0], matrices)
+				else: # La primera es negativa
+					M=matrices[operandos[0]]
+					nula = Mnula(M.x, M.y)
+					acumulado = resta(nula, M)
+				for i in operandos[1:]:
+					acumulado = resta(acumulado, calcula(i, matrices))
+			return acumulado
+		else:
+			return None
+		
+	def hazproductos(expresion, matrices):
+		i=0
+		p = 0
+		marca = 0
+		operandos = []
+		while i < len(expresion):	# Buscamos productos globales
+			if expresion[i] == '(':
+				p = p + 1
+			elif expresion[i] == ')':
+				p = p - 1
+			elif expresion[i] == '.' and p == 0:
+				operandos.append(expresion[marca:i])
+				marca = i + 1
+			i = i + 1
+		operandos.append(expresion[marca:])
+		if marca != 0: # Hemos encontrado productos
+			if len(operandos) < 2:
+				return None # Necesitamos al menos dos operandos
+			else:
+				acumulado = calcula(operandos[0], matrices)
+				for i in operandos[1:]:
+					r = calcula(i, matrices)
+					if isinstance(acumulado, list) and isinstance(r, list):
+						acumulado = producto(acumulado, r)
+					elif isinstance(acumulado, list) and not isinstance(r, list):
+						acumulado = prodnr(acumulado, r)
+					elif not isinstance(acumulado, list) and isinstance(r, list):
+						acumulado = prodnr(acumulado, r)
+					elif not isinstance(acumulado, list) and not isinstance(r, list):
+						acumulado = acumulado * r
+				return acumulado
+		return None
+
+	expresion = formatea(expresion)
+	return calcula(expresion, matrices)
