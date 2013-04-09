@@ -54,7 +54,39 @@ def cuadrada(M):
         return True
     else:
         return False
+        
+def idempotente(M):
+    """Comprueba si la matriz es idempotente, es decir si al elevarla al cuadrado es igual a la original"""
+    if M == potencia(M, 2):
+        return True
+    else:
+        return False
+        
+def involutiva(M):
+    """Comprueba si la matriz es involutiva, es decir si al elevarla al cuadrado es igual a la identidad"""
+    if cuadrada(M):
+        if Midentidad(x(M)) == potencia(M, 2):
+            return True
+        else:
+            return False
+    else: retun False
+  
+def antisimetrica(M):
+    """Comprueba si la matriz es antisimetrica, es decir si su transpuesta negativa es igual a la original"""
+    if cuadrada(M):
+        if M == prodnr(traspuesta(M) , -1):
+            return True
+        else: return False
+    else: return False
 
+def ortogonal(M):
+    """Comprueba si la matriz es ortogonal, es decir si el producto de ella por su transpuesta es la identidad"""
+    if cuadrada(M):
+        if producto(M, traspuesta(M)) == Midentidad(x(M)):
+            return True
+        else: return False
+    else: return False
+       
 def diagonalprincipal(M):
     """ Devuelve la diagonal principal de una matriz"""
     if cuadrada(M):
