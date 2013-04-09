@@ -337,48 +337,66 @@ def discutir(A, S):
 def evalua(expresion, matrices):
 	"""Evalua una expresion matricial. Por ahora acepta sumas ,restas y productos"""
 	def formatea(expresion):
+		
 		if expresion.count('(') != expresion.count(')'):
-			return None # Error: los parentesis no estan emparejados.
-		expresion = expresion.strip()
+			return None # No ha la misma cantidad de parentesis abiertos que cerrados
+		cuenta = 0
+		for i in range(len(expresion)):
+			if expresion[i] == '(':
+				cuenta = cuenta + 1
+			elif expresion[i] == ')':
+				cuenta = cuenta - 1
+			if cuenta < 0:
+				return None # Hemos encontrado un parentesis que cierra antes de abrir
+				
+		expresion = expresion.replace(' ', '')	# Eliminamos los espacios
+		
 		expresion = expresion.replace(')(', ').(')
 		for i in range(0, len(expresion) - 1):
 			if expresion[i].isupper() and expresion[i + 1].isupper():
 				expresion = expresion[:i + 1] + '.' + expresion[i + 1:] # introduce punto entre dos mayusculas seguidas
-		if expresion[-1:] in ['+', '-', '.']:
-			expresion = expresion[:-1]
+			
 		return expresion
         
     
 	def calcula(expresion, matrices):
 		while expresion[0] == '(' and expresion[-1:] == ')':
 			expresion = expresion[1:-1] # Quitamos parentesis globales si los hay
-		if expresion in list(matrices.keys()): # Es directamente una matriz
+			
+		if expresion in list(matrices.keys()): # Si es directamente el identificador de una matriz, devovemos su valor
 			return matrices[expresion]
+			
 		s = hazsumas(expresion, matrices)
 		if s != None :
 			return s
+			
 		s = hazrestas(expresion, matrices)
 		if s != None:
 			return s
+			
 		s = hazproductos(expresion,matrices)
 		if s != None:
 			return s
 	
 	def hazsumas(expresion, matrices):
+		
 		i=0
 		p = 0 # nivel de parentesis
 		marca = 0
 		operandos = []
+		
 		while i < len(expresion):	# Buscamos sumas globales
 			if expresion[i] == '(':
 				p = p + 1
 			elif expresion[i] == ')':
 				p = p - 1
 			elif expresion[i] == '+' and p == 0:
-				operandos.append(expresion[marca:i])
+				operandos.append(expresion[marca:i]) # Incluimos desde la marca hasta este "+"
 				marca = i + 1
 			i = i + 1
-		operandos.append(expresion[marca:])
+		
+		operandos.append(expresion[marca:])	# Incluimos todo lo que va despues del ultimo "+"
+		
 		if marca != 0: # Hemos encontrado una suma primaria
 			if len(operandos) == 1: # Una suma de una sola matriz. Podria ser
 				return calcula(operandos[0], matrices)
@@ -395,12 +413,13 @@ def evalua(expresion, matrices):
 		p = 0
 		marca = 0
 		operandos = []
+		
 		while i < len(expresion):	# Buscamos restas globales
 			if expresion[i] == '(':
 				p = p + 1
 			elif expresion[i] == ')':
 				p = p - 1
-			elif expresion[i] == '-' and p == 0:
+			elif expresion[i] == '-' and p == 0 and i != 0:
 				operandos.append(expresion[marca:i])
 				marca = i + 1
 			i = i + 1
@@ -408,15 +427,13 @@ def evalua(expresion, matrices):
 		if marca != 0: # Hemos encontrado restas primarias
 			if len(operandos) == 1: # Una resta de una sola matriz. Podria ser
 				M = calcula(operandos[0], matrices)
-				nula = Mnula(M.x, M.y)
-				return resta(nula, M)
+				return prodnr(M, -1)
 			else: # Resta esperada de varias matrices
 				if expresion[0] != '-': #La primera no es negativa
 					acumulado = calcula(operandos[0], matrices)
 				else: # La primera es negativa
 					M=matrices[operandos[0]]
-					nula = Mnula(M.x, M.y)
-					acumulado = resta(nula, M)
+					acumulado = prodnr(M, -1)
 				for i in operandos[1:]:
 					acumulado = resta(acumulado, calcula(i, matrices))
 			return acumulado
