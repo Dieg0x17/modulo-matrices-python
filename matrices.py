@@ -512,7 +512,7 @@ def evalua(expresion, matrices):
 	return calcula(expresion, matrices)
 
 dic={} # diccionario como variable global, estaría mejor arriba del todo
-def insM(letra,M)
+def insM(letra,M):
     """Función que inserta una nueva matriz al diccionario de matrices"""
     if len(letra) > 1:
         letra=letra[0] #condición para que solo sea un caracter
