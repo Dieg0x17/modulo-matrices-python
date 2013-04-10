@@ -69,15 +69,18 @@ def involutiva(M):
             return True
         else:
             return False
-    else: retun False
+    else: 
+        return False
   
 def antisimetrica(M):
     """Comprueba si la matriz es antisimetrica, es decir si su transpuesta negativa es igual a la original"""
     if cuadrada(M):
         if M == prodnr(traspuesta(M) , -1):
             return True
-        else: return False
-    else: return False
+        else: 
+            return False
+    else: 
+        return False
 
 def ortogonal(M):
     """Comprueba si la matriz es ortogonal, es decir si el producto de ella por su transpuesta es la identidad"""
