@@ -416,6 +416,10 @@ def evalua(expresion, matrices):
 		s = hazpotencias(expresion, matrices)
 		if s != None:
 			return s
+			
+		s = haztraspuesta(expresion, matrices)
+		if s != None:
+			return s
 	
 	def hazsumas(expresion, matrices):
 		
@@ -538,9 +542,20 @@ def evalua(expresion, matrices):
 			return inversa(acumulado)	# El exponente era negativo
 		else:
 			return acumulado
+			
+	def haztraspuesta(expresion, matrices):
+		# La letra "t" debe ser el ultimo caracter de la expreion, ¿no?
+		if expresion[-1:] != 't':
+			return None
+		else:
+			M = evalua(expresion[:-1]
+			return traspuesta(M)
+		
+				
 				
 	expresion = formatea(expresion)
 	return calcula(expresion, matrices)
+	
 
 dic={} # diccionario como variable global, estaría mejor arriba del todo
 def insM(letra,M):
