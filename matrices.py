@@ -420,6 +420,11 @@ def evalua(expresion, matrices):
 		s = haztraspuesta(expresion, matrices)
 		if s != None:
 			return s
+			
+		s = hazinversa(expresion, matrices):
+			if s != None:
+				return s
+				
 	
 	def hazsumas(expresion, matrices):
 		
@@ -544,14 +549,20 @@ def evalua(expresion, matrices):
 			return acumulado
 			
 	def haztraspuesta(expresion, matrices):
-		# La letra "t" debe ser el ultimo caracter de la expreion, ¿no?
+		# La letra "t" debe ser el ultimo caracter de la expresion, ¿no?
 		if expresion[-1:] != 't':
 			return None
 		else:
-			M = evalua(expresion[:-1]
+			M = evalua(expresion[:-1])
 			return traspuesta(M)
 		
-				
+	def hazinversa(expresion, matrices):
+		# La prima debe ser el ultimo caracter de la expresion, ¿no?
+		if expresion[-1:] != "'":
+			return None
+		else:
+			M = evalua(expresion[-1:])
+			return inversa(M)
 				
 	expresion = formatea(expresion)
 	return calcula(expresion, matrices)
