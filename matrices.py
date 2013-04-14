@@ -409,7 +409,11 @@ def evalua(expresion, matrices):
 		if s != None:
 			return s
 			
-		s = hazproductos(expresion,matrices)
+		s = hazproductos(expresion, matrices)
+		if s != None:
+			return s
+			
+		s = hazpotencias(expresion, matrices)
 		if s != None:
 			return s
 	
@@ -507,7 +511,34 @@ def evalua(expresion, matrices):
 						acumulado = acumulado * r
 				return acumulado
 		return None
-
+		
+	def hazpotencias(expresion, matrices):
+		# Suponemos que en la expresión pasada como parametro hay una unica potencia. A la izquerda está la base, y a la derecha hay un exponente entero
+		i = 0
+		p = 0
+		encontrado = False
+		while i < len(expresion):
+			if expresion[i] == '(':
+				p = p + 1
+			elif expresion[i] == ')':
+				p = p - 1
+			elif expresion[i] == '^' and p == 0:
+				base = expresion[:i]
+				exponente = int(expresion[i + 1:])
+				encontrado = True
+			i = i + 1
+		if not encontrado:	# No hay potencias fuera de parentesis
+			return None
+		n = abs(exponente)
+		M = evalua(base)
+		acumulado = prodnr(M, 1)	# Esto es para hacer una copia, no un clon (o como quiera que se diferencie esto)
+		for i in range(n):
+			acumulado = producto(acumulado, M)
+		if n != exponente:
+			return inversa(acumulado)	# El exponente era negativo
+		else:
+			return acumulado
+				
 	expresion = formatea(expresion)
 	return calcula(expresion, matrices)
 
