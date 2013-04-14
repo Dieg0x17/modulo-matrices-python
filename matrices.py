@@ -421,9 +421,9 @@ def evalua(expresion, matrices):
 		if s != None:
 			return s
 			
-		s = hazinversa(expresion, matrices):
-			if s != None:
-				return s
+		s = hazinversa(expresion, matrices)
+		if s != None:
+			return s
 				
 	
 	def hazsumas(expresion, matrices):
@@ -553,7 +553,7 @@ def evalua(expresion, matrices):
 		if expresion[-1:] != 't':
 			return None
 		else:
-			M = evalua(expresion[:-1])
+			M = evalua(expresion[:-1], matrices)
 			return traspuesta(M)
 		
 	def hazinversa(expresion, matrices):
@@ -561,7 +561,7 @@ def evalua(expresion, matrices):
 		if expresion[-1:] != "'":
 			return None
 		else:
-			M = evalua(expresion[-1:])
+			M = evalua(expresion[-1:], matrices)
 			return inversa(M)
 				
 	expresion = formatea(expresion)
