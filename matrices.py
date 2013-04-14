@@ -10,6 +10,8 @@
 import fractions
 import string
 
+dic={} # diccionario como variable global
+
 def error(n):
     if n==1: return "Fallo de formato, compruebe si es correcta la escritura de la matriz"
     elif n==2: return "Inserte una matriz cuadrada"
@@ -369,7 +371,7 @@ def discutir(A, S):
             print("Sistema compatible indeterminado (infinitas soluciones)")
             return 2
 
-def evalua(expresion, matrices):
+def evalua(expresion):
 	"""Evalua una expresion matricial. Por ahora acepta sumas ,restas y productos"""
 	def formatea(expresion):
 		
@@ -394,41 +396,41 @@ def evalua(expresion, matrices):
 		return expresion
         
     
-	def calcula(expresion, matrices):
+	def calcula(expresion):
 		while expresion[0] == '(' and expresion[-1:] == ')':
 			expresion = expresion[1:-1] # Quitamos parentesis globales si los hay
 			
-		if expresion in list(matrices.keys()): # Si es directamente el identificador de una matriz, devovemos su valor
-			return matrices[expresion]
+		if expresion in list(dic.keys()): # Si es directamente el identificador de una matriz, devovemos su valor
+			return dic[expresion]
 			
-		s = hazsumas(expresion, matrices)
+		s = hazsumas(expresion)
 		if s != None :
 			return s
 			
-		s = hazrestas(expresion, matrices)
+		s = hazrestas(expresion)
 		if s != None:
 			return s
 			
-		s = hazproductos(expresion, matrices)
+		s = hazproductos(expresion)
 		if s != None:
 			return s
 			
-		s = hazpotencias(expresion, matrices)
+		s = hazpotencias(expresion)
 		if s != None:
 			return s
 			
-		s = haztraspuesta(expresion, matrices)
+		s = haztraspuesta(expresion)
 		if s != None:
 			return s
 			
-		s = hazinversa(expresion, matrices)
+		s = hazinversa(expresion)
 		if s != None:
 			return s
 			
 		return None	# Esto si no ha habido exito con ninguno de los anteriores intentos
 				
 	
-	def hazsumas(expresion, matrices):
+	def hazsumas(expresion):
 		
 		i=0
 		p = 0 # nivel de parentesis
@@ -449,16 +451,16 @@ def evalua(expresion, matrices):
 		
 		if marca != 0: # Hemos encontrado una suma primaria
 			if len(operandos) == 1: # Una suma de una sola matriz. Podria ser
-				return calcula(operandos[0], matrices)
+				return calcula(operandos[0])
 			else: #Suma esperada de varias matrices
-				acumulado = calcula(operandos[0], matrices)
+				acumulado = calcula(operandos[0])
 				for i in operandos[1:]:
-					acumulado = suma(acumulado, calcula(i, matrices))
+					acumulado = suma(acumulado, calcula(i))
 				return acumulado
 		else:
 			return None
 			
-	def hazrestas(expresion, matrices):
+	def hazrestas(expresion):
 		i=0
 		p = 0
 		marca = 0
@@ -476,21 +478,21 @@ def evalua(expresion, matrices):
 		operandos.append(expresion[marca:])
 		if marca != 0: # Hemos encontrado restas primarias
 			if len(operandos) == 1: # Una resta de una sola matriz. Podria ser
-				M = calcula(operandos[0], matrices)
+				M = calcula(operandos[0])
 				return prodnr(M, -1)
 			else: # Resta esperada de varias matrices
 				if expresion[0] != '-': #La primera no es negativa
-					acumulado = calcula(operandos[0], matrices)
+					acumulado = calcula(operandos[0])
 				else: # La primera es negativa
-					M=matrices[operandos[0]]
+					M=calcula(operandos[0])
 					acumulado = prodnr(M, -1)
 				for i in operandos[1:]:
-					acumulado = resta(acumulado, calcula(i, matrices))
+					acumulado = resta(acumulado, calcula(i))
 			return acumulado
 		else:
 			return None
 		
-	def hazproductos(expresion, matrices):
+	def hazproductos(expresion):
 		i=0
 		p = 0
 		marca = 0
@@ -509,9 +511,9 @@ def evalua(expresion, matrices):
 			if len(operandos) < 2:
 				return None # Necesitamos al menos dos operandos
 			else:
-				acumulado = calcula(operandos[0], matrices)
+				acumulado = calcula(operandos[0])
 				for i in operandos[1:]:
-					r = calcula(i, matrices)
+					r = calcula(i)
 					if isinstance(acumulado, list) and isinstance(r, list):
 						acumulado = producto(acumulado, r)
 					elif isinstance(acumulado, list) and not isinstance(r, list):
@@ -523,7 +525,7 @@ def evalua(expresion, matrices):
 				return acumulado
 		return None
 		
-	def hazpotencias(expresion, matrices):
+	def hazpotencias(expresion):
 		# Suponemos que en la expresión pasada como parametro hay una unica potencia. A la izquerda está la base, y a la derecha hay un exponente entero
 		i = 0
 		p = 0
@@ -550,31 +552,30 @@ def evalua(expresion, matrices):
 		else:
 			return acumulado
 			
-	def haztraspuesta(expresion, matrices):
+	def haztraspuesta(expresion):
 		# La letra "t" debe ser el ultimo caracter de la expresion, ¿no?
 		if expresion[-1:] != 't':
 			return None
 		else:
-			M = evalua(expresion[:-1], matrices)
+			M = calcula(expresion[:-1])
 			return traspuesta(M)
 		
-	def hazinversa(expresion, matrices):
+	def hazinversa(expresion):
 		# La prima debe ser el ultimo caracter de la expresion, ¿no?
 		if expresion[-1:] != "'":
 			return None
 		else:
-			M = evalua(expresion[-1:], matrices)
+			M = calcula(expresion[-1:])
 			return inversa(M)
 				
 	expresion = formatea(expresion)
-	return calcula(expresion, matrices)
+	return calcula(expresion)
 	
 
-dic={} # diccionario como variable global, estaría mejor arriba del todo
 def insM(letra,M):
     """Función que inserta una nueva matriz al diccionario de matrices"""
     if len(letra) > 1:
         letra=letra[0] #condición para que solo sea un caracter
-    letra=string.upper(letra)
+    letra=letra.upper()
     dic[letra]=M
     
