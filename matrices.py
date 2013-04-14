@@ -424,6 +424,8 @@ def evalua(expresion, matrices):
 		s = hazinversa(expresion, matrices)
 		if s != None:
 			return s
+			
+		return None	# Esto si no ha habido exito con ninguno de los anteriores intentos
 				
 	
 	def hazsumas(expresion, matrices):
