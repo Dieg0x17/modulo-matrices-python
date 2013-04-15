@@ -9,14 +9,15 @@
 
 import fractions
 import string
+import sys
 
 dic={} # diccionario como variable global
 
 def error(n):
-    if n==1: return "Fallo de formato, compruebe si es correcta la escritura de la matriz"
-    elif n==2: return "Inserte una matriz cuadrada"
-    elif n==3: return "La matriz no tiene inversa"
-    elif n==4: return "No se puede aplicar Cramer al sistema"
+    if n==1: sys.stderr.write("Fallo de formato, compruebe si es correcta la escritura de la matriz")
+    elif n==2: sys.stderr.write("Inserte una matriz cuadrada")
+    elif n==3:  sys.stderr.write("La matriz no tiene inversa")
+    elif n==4: sys.stderr.write("No se puede aplicar Cramer al sistema")
 
 def x(M):
     """Devuelve el número de filas"""
@@ -46,8 +47,10 @@ def comprueba(M):
         if len(M[0])==x(M)*y(M) and len(M[1])==2:
             return True #M
         else:
+            error(1)
             return False #error(1)
     except:
+        error(1)
         return False #error(1)
 
 def cuadrada(M):
@@ -579,3 +582,19 @@ def insM(letra,M):
     letra=letra.upper()
     dic[letra]=M
     
+def latex(M):
+	if not comprueba(M):	# La propia funcion comprueba ya devuelve un mensaje de error
+		return None
+	prefijo = "\\begin{pmatrix} "
+	sufijo = "\\end{pmatrix}"
+	expresion = prefijo
+	M = Mlistasfilas(M)
+	for f in M:
+		for c in range(len(f)):
+			if c == 0:
+				expresion = expresion + str(f[c])
+			else:
+				expresion = expresion + ' & ' + str(f[c])
+		expresion = expresion + " \\\\ "
+	expresion = expresion + sufijo
+	return expresion
