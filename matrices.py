@@ -583,6 +583,7 @@ def insM(letra,M):
     dic[letra]=M
     
 def latex(M):
+	"""Devuelve una cadena con la matriz pasada como parámetro en formato LaTeX"""
 	if not comprueba(M):	# La propia funcion comprueba ya devuelve un mensaje de error
 		return None
 	prefijo = "\\begin{pmatrix} "
