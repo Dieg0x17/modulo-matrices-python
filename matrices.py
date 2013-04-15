@@ -260,7 +260,7 @@ def traspuesta(M):
 def matrizAdjunta(M):
     """Calcula la matriz adjunta de M"""
     if not cuadrada(M):
-        raise NameError('La matriz no es cuadrada')
+        return None
     if x(M)==1:
         return M[:]
     if x(M)==2:
@@ -288,9 +288,10 @@ def inversa(M):
 def submatriz(M, f, c):
     """Elimina la fila f y la columna c de una matriz (menor complementario)"""
     if x(M)<2:
-        raise NameError("No puedo eliminar la única fila de la matriz")
+		sys.stderr.write("Imposible eliminar la única fila de una matriz al tratar de extraer una submatriz")
+        return None
     if y(M)<2:
-        raise NameError("No puedo eliminar la única columna de la matriz")
+        sys.stderr.write("Imposible eliminar la única columna de una matriz al tratar de extraer una submatriz")
     A=[M[0][:], M[1][:]]
     del A[0][(f-1)*y(A): f*y(A)]
     for i in range(len(A[0])-y(A)+c, 0,-y(A)):
@@ -322,7 +323,7 @@ def cramer(A, S):
             sol.append(xn)
         return sol
     else:
-        raise NameError(error(4))
+        error(4)
 
 def escalonar(M):
     "Devuelve la matriz escalonada"
