@@ -18,6 +18,10 @@ def error(n):
     elif n==2: sys.stderr.write("Inserte una matriz cuadrada")
     elif n==3:  sys.stderr.write("La matriz no tiene inversa")
     elif n==4: sys.stderr.write("No se puede aplicar Cramer al sistema")
+    
+    elif n==10: sys.stderr.write("Solo puede haber un signo de igualdad en una expresión")
+    elif n==11: sys.stderr.write("Solo se puede asignar una expresión a una letra mayúscula distinta de I y X")
+    elif n==12: sys.stderr.write("El signo de igualdad debe ser el segundo caracter")
 
 def x(M):
     """Devuelve el número de filas"""
@@ -288,7 +292,7 @@ def inversa(M):
 def submatriz(M, f, c):
     """Elimina la fila f y la columna c de una matriz (menor complementario)"""
     if x(M)<2:
-		sys.stderr.write("Imposible eliminar la única fila de una matriz al tratar de extraer una submatriz")
+        sys.stderr.write("Imposible eliminar la única fila de una matriz al tratar de extraer una submatriz")
         return None
     if y(M)<2:
         sys.stderr.write("Imposible eliminar la única columna de una matriz al tratar de extraer una submatriz")
@@ -396,6 +400,16 @@ def evalua(expresion):
 		for i in range(0, len(expresion) - 1):
 			if expresion[i].isupper() and expresion[i + 1].isupper():
 				expresion = expresion[:i + 1] + '.' + expresion[i + 1:] # introduce punto entre dos mayusculas seguidas
+		if expresion.count('=') > 0: # Se trata de una asignación
+			if expresion.count('=') > 1: # No debe haber más de un signo de igualdad
+				error(10)
+				return None
+			elif expresion[0].upper() not in 'ABCDEFGHJKLMNOPQRSTUVWYZ': # El primer caracter deber ser un nombre de variable válido
+				error(11)
+				return None
+			elif expresion[1] != '=': # = debe ser el segundo caracter... por ahora
+				error(12)
+				return None
 			
 		return expresion
         
@@ -573,6 +587,11 @@ def evalua(expresion):
 			return inversa(M)
 				
 	expresion = formatea(expresion)
+	if expresion.count('=') == 1:	# Si se trata de una asignacion
+		variable = expresion[0]
+		M = calcula(expresion[2:])
+		dic[variable] = M	# Ojo: permitimos el "pisado" de variables; entiendo que debe ser asi.
+		return M
 	return calcula(expresion)
 	
 
